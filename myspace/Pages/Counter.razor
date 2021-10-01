@@ -1,5 +1,7 @@
 ﻿@page "/counter"
 
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
@@ -7,35 +9,85 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
+    private long currentCount = 0;
 
-    private void IncrementCount()
+    private string hashValue = "";
+
+    string IntCookieName = "CounterValue";
+    string CounterHash = "CounterHash";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var hashCookieValue = await GetCookie(CounterHash);
+            if(hashCookieValue != null)
+            {
+                hashValue = hashCookieValue.ToString();
+            }
+            else
+            {
+                hashValue = Services.PageHelpers.GetHashString(currentCount.ToString());
+            }
+
+            var value = await GetCookie(IntCookieName);
+            currentCount = Convert.ToInt64(value.ToString());
+
+            var checkHashValue = Services.PageHelpers.GetHashString(currentCount.ToString());
+
+            if (currentCount != 0 && !String.IsNullOrEmpty(hashValue) && hashValue != checkHashValue)
+            {
+                currentCount = 0;
+            }
+
+            StateHasChanged();
+        }
+    }
+
+    async Task<object> GetCookie(string cookieName)
+    {
+        var value = await localStorage.GetItemAsync<object>(cookieName);
+
+        return value;
+    }
+
+    async Task SetCookie(string cookieName, object value)
+    {
+        await localStorage.SetItemAsync(cookieName, value);
+    }
+
+    private async void IncrementCount()
     {
         currentCount = Calculation(currentCount);
+        await SetCookie(IntCookieName, currentCount);
+
+
+        var currentCountHash = Services.PageHelpers.GetHashString(currentCount.ToString());
+        await SetCookie(CounterHash, currentCountHash);
     }
 
-public int Calculation(int number)
-{    
-    while(true)
+    public long Calculation(long number)
     {
-        bool isPrime = true;
-        //increment the number by 1 each time
-        number = number + 1;
-
-        int squaredNumber = (int)Math.Sqrt(number);
-
-        //start at 2 and increment by 1 until it gets to the squared number
-        for (int i = 2; i <= squaredNumber; i++)
+        while (true)
         {
-            //how do I check all i's?
-            if (number % i == 0)
+            bool isPrime = true;
+            //increment the number by 1 each time
+            number = number + 1;
+
+            long squaredNumber = (long)Math.Sqrt(number);
+
+            //start at 2 and increment by 1 until it gets to the squared number
+            for (long i = 2; i <= squaredNumber; i++)
             {
-                isPrime = false;
-                break;
+                //how do I check all i's?
+                if (number % i == 0)
+                {
+                    isPrime = false;
+                    break;
+                }
             }
+            if (isPrime)
+                return number;
         }
-        if(isPrime)
-            return number;
     }
-}
 }
