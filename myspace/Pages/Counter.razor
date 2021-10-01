@@ -31,7 +31,10 @@
             }
 
             var value = await GetCookie(IntCookieName);
-            currentCount = Convert.ToInt64(value.ToString());
+            if (value != null)
+            {
+                currentCount = Convert.ToInt64(value.ToString());
+            }
 
             var checkHashValue = Services.PageHelpers.GetHashString(currentCount.ToString());
 
