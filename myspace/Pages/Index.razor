@@ -1,6 +1,7 @@
 ﻿@page "/"
 
 @using Microsoft.AspNetCore.WebUtilities
+@using myspace.Extensions
 
 @inject NavigationManager NavManager
 
@@ -8,26 +9,31 @@
 
 Welcome to your new app.
 
-@code{
-    public string redirectURL { get; set; }
+<button class="btn btn-primary" @onclick="GetURL" >Tryck</button>
 
-    protected override void OnInitialized()
+<p>RedirectURL: @redirectURL</p>
+
+@code {
+    public string redirectURL = "";
+
+    protected override void OnAfterRender(bool firstRender)
     {
-        GetURL();
-        if (!String.IsNullOrEmpty(redirectURL))
+        if (firstRender)
         {
-            NavManager.NavigateTo(redirectURL);
+            GetURL();
+            if (!String.IsNullOrEmpty(redirectURL))
+            {
+                NavManager.NavigateTo(redirectURL);
+            }
         }
     }
 
-    string GetURL()
+    void GetURL()
     {
-        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
-        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("redirectURL", out var _redirectURL))
-        {
-            return _redirectURL;
-        }
+        //NavManager.TryGetQueryString<string>("redirectURL", out redirectURL);
 
-        return "";
+        var queryStrings = NavManager.QueryString();
+
+        redirectURL = queryStrings["redirectURL"];
     }
 }
