@@ -9,10 +9,6 @@
 
 Welcome to your new app.
 
-<button class="btn btn-primary" @onclick="GetURL" >Tryck</button>
-
-<p>RedirectURL: @redirectURL</p>
-
 @code {
     public string redirectURL = "";
 
@@ -30,10 +26,6 @@ Welcome to your new app.
 
     void GetURL()
     {
-        //NavManager.TryGetQueryString<string>("redirectURL", out redirectURL);
-
-        var queryStrings = NavManager.QueryString();
-
-        redirectURL = queryStrings["redirectURL"];
+        redirectURL = NavManager.QueryString("redirectURL");
     }
 }
