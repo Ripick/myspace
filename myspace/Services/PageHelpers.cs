@@ -8,7 +8,7 @@ namespace myspace.Services
     {
         public static byte[] GetHash(string inputString)
         {
-            using (HashAlgorithm algorithm = SHA256.Create())
+            using (HashAlgorithm algorithm = SHA512.Create())
                 return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
 

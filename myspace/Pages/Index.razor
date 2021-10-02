@@ -1,5 +1,33 @@
 ﻿@page "/"
 
+@using Microsoft.AspNetCore.WebUtilities
+
+@inject NavigationManager NavManager
+
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+@code{
+    public string redirectURL { get; set; }
+
+    protected override void OnInitialized()
+    {
+        GetURL();
+        if (!String.IsNullOrEmpty(redirectURL))
+        {
+            NavManager.NavigateTo(redirectURL);
+        }
+    }
+
+    string GetURL()
+    {
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("redirectURL", out var _redirectURL))
+        {
+            return _redirectURL;
+        }
+
+        return "";
+    }
+}
