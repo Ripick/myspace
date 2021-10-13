@@ -1,3 +1,9 @@
 @page "/test"
 
-Hej, från äggkoppar sida.
+@inject Data.CounterSaver _counterSaver
+
+@_counterSaver.Counter
+
+@code{
+    [Parameter] public EventCallback<string> OnClick { get; set; }
+}

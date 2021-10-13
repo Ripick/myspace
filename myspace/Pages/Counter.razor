@@ -1,15 +1,35 @@
 ﻿@page "/counter"
 
+@inject Data.CounterSaver _counterSaver
 @inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+<p>Current count: @_counterSaver.Counter</p>
+<p>Time To calculate(ms): @timeToCalculateNextPrime</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="IncrementCountFaster">Click me faster</button>
+
+<div>
+    <label>Time to run Prime Counter</label>
+    <input type="number" @bind="primesMilliseconds" />
+
+    @if (higihestPrime != 0)
+    {
+        <p>Highest Prime: @higihestPrime</p>
+    }
+
+    <button class="btn btn-primary" @onclick="CalculatePrimes">Calculate Primes</button>
+</div>
 
 @code {
-    private long currentCount = 0;
+
+    private int primesMilliseconds = 1;
+
+    private long higihestPrime = 0;
+
+    private double timeToCalculateNextPrime = 0;
 
     private string hashValue = "";
 
@@ -21,26 +41,26 @@
         if (firstRender)
         {
             var hashCookieValue = await GetCookie(CounterHash);
-            if(hashCookieValue != null)
+            if (hashCookieValue != null)
             {
                 hashValue = hashCookieValue.ToString();
             }
             else
             {
-                hashValue = Services.PageHelpers.GetHashString(currentCount.ToString());
+                hashValue = Services.PageHelpers.GetHashString(_counterSaver.Counter.ToString());
             }
 
             var value = await GetCookie(IntCookieName);
             if (value != null)
             {
-                currentCount = Convert.ToInt64(value.ToString());
+                _counterSaver.Counter = Convert.ToInt64(value.ToString());
             }
 
-            var checkHashValue = Services.PageHelpers.GetHashString(currentCount.ToString());
+            var checkHashValue = Services.PageHelpers.GetHashString(_counterSaver.Counter.ToString());
 
-            if (currentCount != 0 && !String.IsNullOrEmpty(hashValue) && hashValue != checkHashValue)
+            if (_counterSaver.Counter != 0 && !String.IsNullOrEmpty(hashValue) && hashValue != checkHashValue)
             {
-                currentCount = 0;
+                _counterSaver.Counter = 0;
             }
 
             StateHasChanged();
@@ -61,36 +81,26 @@
 
     private async void IncrementCount()
     {
-        currentCount = Calculation(currentCount);
-        await SetCookie(IntCookieName, currentCount);
+        (_counterSaver.Counter, timeToCalculateNextPrime) = _counterSaver.Calculation(_counterSaver.Counter);
+        await SetCookie(IntCookieName, _counterSaver.Counter);
 
 
-        var currentCountHash = Services.PageHelpers.GetHashString(currentCount.ToString());
+        var currentCountHash = Services.PageHelpers.GetHashString(_counterSaver.Counter.ToString());
         await SetCookie(CounterHash, currentCountHash);
     }
 
-    public long Calculation(long number)
+    private async void IncrementCountFaster()
     {
-        while (true)
-        {
-            bool isPrime = true;
-            //increment the number by 1 each time
-            number = number + 1;
+        (_counterSaver.Counter, timeToCalculateNextPrime) = _counterSaver.CalculationFaster(_counterSaver.Counter);
+        await SetCookie(IntCookieName, _counterSaver.Counter);
 
-            long squaredNumber = (long)Math.Sqrt(number);
 
-            //start at 2 and increment by 1 until it gets to the squared number
-            for (long i = 2; i <= squaredNumber; i++)
-            {
-                //how do I check all i's?
-                if (number % i == 0)
-                {
-                    isPrime = false;
-                    break;
-                }
-            }
-            if (isPrime)
-                return number;
-        }
+        var currentCountHash = Services.PageHelpers.GetHashString(_counterSaver.Counter.ToString());
+        await SetCookie(CounterHash, currentCountHash);
+    }
+
+    private void CalculatePrimes()
+    {
+        higihestPrime = _counterSaver.CountPrimes(primesMilliseconds);
     }
 }
