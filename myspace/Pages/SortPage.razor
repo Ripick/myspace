@@ -9,7 +9,14 @@
         {
             btnClass = "btn-primary";
         }
-        <button class="btn @btnClass" @onclick="ChangeAutoGenerate">Auto Generate</button>
+        <button class="btn @btnClass" @onclick="() => ChangeBool(ref autoGenerate)">Auto Generate</button>
+
+        string btnClass2 = "btn-default";
+        if (fastSort)
+        {
+            btnClass2 = "btn-primary";
+        }
+        <button class="btn @btnClass2" @onclick="() => ChangeBool(ref fastSort)">Fast Sort</button>
         <br />
     }
 
@@ -48,7 +55,7 @@
 
 </div>
 <div class="row">
-    @if(timeToSort > 0)
+    @if (timeToSort > 0)
     {
         <p>Time To Sort(ms): @timeToSort</p>
     }
@@ -96,6 +103,8 @@
     bool autoGenerate = true;
     int amountOfNumbersToGenerate = 100;
 
+    bool fastSort = false;
+
     private double timeToSort = 0;
 
     void AutoGenerateToIntArray()
@@ -109,9 +118,9 @@
         }
     }
 
-    void ChangeAutoGenerate()
+    void ChangeBool(ref bool value)
     {
-        autoGenerate = !autoGenerate;
+        value = !value;
     }
 
     void StringToIntArray()
@@ -143,7 +152,15 @@
         sw.Start();
         sortedArray = new int[arrayToSort.Length];
         arrayToSort.CopyTo(sortedArray, 0);
-        _sortService.TheSimplestSort(sortedArray);
+        if (fastSort)
+        {
+            _sortService.FastSort(sortedArray);
+        }
+        else
+        {
+            _sortService.TheSimplestSort(sortedArray);
+        }
+
         sw.Stop();
         timeToSort = sw.ElapsedMilliseconds;
     }
@@ -154,7 +171,14 @@
         sw.Start();
         sortedArray = new int[arrayToSort.Length];
         arrayToSort.CopyTo(sortedArray, 0);
-        _sortService.TheSimplestSortReversed(sortedArray);
+        if (fastSort)
+        {
+            _sortService.FastSortReverse(sortedArray);
+        }
+        else
+        {
+            _sortService.TheSimplestSortReverse(sortedArray);
+        }
         sw.Stop();
         timeToSort = sw.ElapsedMilliseconds;
     }

@@ -19,7 +19,7 @@
             }
         }
 
-        public void TheSimplestSortReversed(int[] A)
+        public void TheSimplestSortReverse(int[] A)
         {
             for (int i = 0; i < A.Length; i++)
             {
@@ -33,6 +33,16 @@
                     }
                 }
             }
+        }
+
+        public void FastSort(int[] A)
+        {
+            System.Array.Sort(A);
+        }
+        public void FastSortReverse(int[] A)
+        {
+            System.Array.Sort(A);
+            System.Array.Reverse(A);
         }
     }
 }
