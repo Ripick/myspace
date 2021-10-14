@@ -1,0 +1,162 @@
+﻿@page "/Sort"
+
+@inject SortService _sortService
+
+<div>
+    @{
+        string btnClass = "btn-default";
+        if (autoGenerate)
+        {
+            btnClass = "btn-primary";
+        }
+        <button class="btn @btnClass" @onclick="ChangeAutoGenerate">Auto Generate</button>
+        <br />
+    }
+
+    @if (autoGenerate)
+    {
+        <label>Number of numbers to generate</label>
+        <input type="number" @bind="amountOfNumbersToGenerate" />
+        <br />
+        @if (arrayToSort is not null && arrayToSort.Length > 1)
+        {
+            <button class="btn btn-primary" @onclick="AutoGenerateToIntArray">Auto generate numbers</button>
+            <button class="btn btn-warning" @onclick="Sort">Sort</button>
+            <button class="btn btn-warning" @onclick="SortDescending">Sort descending</button>
+        }
+        else
+        {
+            <button class="btn btn-primary" @onclick="AutoGenerateToIntArray">Auto generate numbers</button>
+        }
+    }
+    else
+    {
+        <h4>Paste comma separated numbers</h4>
+        <textarea @bind="stringToSplit" cols="100"></textarea>
+        <br />
+        @if (arrayToSort is not null && arrayToSort.Length > 1)
+        {
+            <button class="btn btn-primary" @onclick="StringToIntArray">To Array</button>
+            <button class="btn btn-warning" @onclick="Sort">Sort</button>
+            <button class="btn btn-warning" @onclick="SortDescending">Sort descending</button>
+        }
+        else
+        {
+            <button class="btn btn-primary" @onclick="StringToIntArray">To Array</button>
+        }
+    }
+
+</div>
+<div class="row">
+    @if(timeToSort > 0)
+    {
+        <p>Time To Sort(ms): @timeToSort</p>
+    }
+    <br />
+    @if (arrayToSort is not null && arrayToSort.Length > 1 && String.IsNullOrEmpty(ErrorMessage))
+    {
+        <table style="max-height: 60vh;" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Not Sorted</th>
+                    <th>Sorted</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < arrayToSort.Length; i++)
+                {
+                    <tr>
+                        <td>@arrayToSort[i]</td>
+                        @if (sortedArray is not null && sortedArray.Length == arrayToSort.Length)
+                        {
+                            <td>@sortedArray[i]</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else if (!String.IsNullOrEmpty(ErrorMessage))
+    {
+        <p style="color: red;">@ErrorMessage</p>
+    }
+</div>
+
+@code {
+    string stringToSplit = "";
+    int[] arrayToSort;
+    int[] sortedArray;
+
+    string ErrorMessage = "";
+
+    bool autoGenerate = false;
+    int amountOfNumbersToGenerate = 100;
+
+    private double timeToSort = 0;
+
+    void AutoGenerateToIntArray()
+    {
+        Random rnd = new Random();
+        arrayToSort = new int[amountOfNumbersToGenerate];
+
+        for (int i = 0; i < arrayToSort.Length; i++)
+        {
+            arrayToSort[i] = rnd.Next(1, 10000);
+        }
+    }
+
+    void ChangeAutoGenerate()
+    {
+        autoGenerate = !autoGenerate;
+    }
+
+    void StringToIntArray()
+    {
+        ErrorMessage = "";
+        var splitedString = stringToSplit.Split(',');
+
+        if (splitedString.Length > 1)
+        {
+            arrayToSort = new int[splitedString.Length];
+            for (int i = 0; i < splitedString.Length; i++)
+            {
+                if (Int32.TryParse(splitedString[i], out int number))
+                {
+                    arrayToSort[i] = number;
+                }
+                else
+                {
+                    ErrorMessage = $"Failed to convert {splitedString[i]} to number!";
+                    break;
+                }
+            }
+        }
+    }
+
+    void Sort()
+    {
+        var sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+        sortedArray = new int[arrayToSort.Length];
+        arrayToSort.CopyTo(sortedArray, 0);
+        _sortService.TheSimplestSort(sortedArray);
+        sw.Stop();
+        timeToSort = sw.ElapsedMilliseconds;
+    }
+
+    void SortDescending()
+    {
+        var sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+        sortedArray = new int[arrayToSort.Length];
+        arrayToSort.CopyTo(sortedArray, 0);
+        _sortService.TheSimplestSortReversed(sortedArray);
+        sw.Stop();
+        timeToSort = sw.ElapsedMilliseconds;
+    }
+
+}
