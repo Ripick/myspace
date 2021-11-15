@@ -2,3 +2,13 @@
 
 <h1> placeholder </h1>
 <p> ladda upp en fil i textrutan så kommer du få ett svar på om det är mitt cv/pb eller inte... </p>
+
+<InputFile OnChange="@LoadFiles" multiple />
+
+@code {
+    private void LoadFiles(InputFileChangeEventArgs e)
+    {
+        await using FileStream fs = new(path, FileMode.Create);
+        await browserFile.OpenReadStream().CopyToAsync(fs);
+    }
+}
