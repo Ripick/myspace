@@ -9,7 +9,7 @@
     "assembly": {
       "Blazored.LocalStorage.dll": "sha256-WMIsh\/dPQdFpomapCnZyNohR2JXVLLtaSeOhBtDyQxw=",
       "Microsoft.AspNetCore.Components.dll": "sha256-Dq\/lAzv6qdneBAPARy51pJ2TUr5c01H84RgKBAEEWHs=",
-      "Microsoft.AspNetCore.Components.Web.dll": "sha256-ZcNLy++mQnAHUASL8VOJI3bUHWFgFAujhZ4Xhgl+LR4=",
+      "Microsoft.AspNetCore.Components.Web.dll": "sha256-5qva+pDa3G5hV0ss08PRGDTEuPPRET62YqLnxI2ihyw=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-6fqkNAawDwlb27W4Fe3FExuuMo2LcWd\/kr5XROl8rXo=",
       "Microsoft.AspNetCore.WebUtilities.dll": "sha256-UjxI\/nrOVaQDM3wf94yaJJnJ8knc5jV5Qm44TvxnLI0=",
       "Microsoft.Extensions.Configuration.dll": "sha256-bZZ69\/58+BnN9G33FpTd2iXAdfgLbBnDUiiKxfaZ7IU=",
@@ -25,7 +25,7 @@
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-uUEihv0ckR\/y+ZrbS\/hxKIyLU+K+qYe6z1nc63kR\/iQ=",
       "Microsoft.Net.Http.Headers.dll": "sha256-Wvp5b2xB1gZg9yya2UqQycv2STns92xStLKpmRv5Aww=",
       "System.IO.Pipelines.dll": "sha256-qZYTUS+ga7CydtH54fYPbehFCvx3B49I74G8dxreTog=",
-      "myspace.dll": "sha256-Ug6KgdnAM0nbpOs+797y6PR0D5vJh3zMAK16WAxwHWg=",
+      "myspace.dll": "sha256-zjZBkbkIzgxGall2cMjdzsFqQ1ohiP7WSKtsqc+OOz0=",
       "System.Collections.Concurrent.dll": "sha256-0ftyAluaTaeAtX0oKilQQcST+V889AXWKyjopWBfwdg=",
       "System.Collections.Immutable.dll": "sha256-19jO0iWIZaE0g2MBKMpeRnBeW38TZVBKx\/fr7PwPtD8=",
       "System.Collections.NonGeneric.dll": "sha256-fIpc+4kXKBH3mTb\/XIpVNZZCQrLdjmPZhZYghYKET94=",
@@ -51,7 +51,7 @@
       "System.Text.Json.dll": "sha256-Ya5\/JGS0iMV012hWxgwkyFhax2k3LfO2I01hPZcCHJo=",
       "System.Text.RegularExpressions.dll": "sha256-BK5MBBQqicsfVrcv2bCDwOsqZWn2xNAAEYFYa9KotqA=",
       "System.Web.HttpUtility.dll": "sha256-v3iDEOYi4AlEeKtx3i99gXl4+QJG0L+RTRIXfx8Mv00=",
-      "System.Private.CoreLib.dll": "sha256-KhgmsMzQ5L6TwWAMrT89tQnsA3bWGygSdW5qC+PyShU="
+      "System.Private.CoreLib.dll": "sha256-wmjA30VDvKe80iCYgMqC0y\/4IyeyYmkK4Jn27EXndz0="
     },
     "lazyAssembly": null,
     "pdb": null,
