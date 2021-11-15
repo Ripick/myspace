@@ -3,11 +3,13 @@
 <h1> placeholder </h1>
 <p> ladda upp en fil i textrutan så kommer du få ett svar på om det är mitt cv/pb eller inte... </p>
 
-<InputFile OnChange="@SingleUpload" multiple />
+<InputFile OnChange="@SingleUpload" />
 
 @code {
-     private async Task SingleUpload(InputFileChangeEventArgs e)
+    @using System.IO
+    private async Task SingleUpload(InputFileChangeEventArgs e)
     {
+        
        MemoryStream ms = new MemoryStream();
        await e.File.OpenReadStream().CopyToAsync(ms);
        var bytes = ms.ToArray();
