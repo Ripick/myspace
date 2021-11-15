@@ -6,9 +6,11 @@
 <InputFile OnChange="@LoadFiles" multiple />
 
 @code {
-    private void LoadFiles(InputFileChangeEventArgs e)
+     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
-        await using FileStream fs = new(path, FileMode.Create);
-        await browserFile.OpenReadStream().CopyToAsync(fs);
+       MemoryStream ms = new MemoryStream();
+       await e.File.OpenReadStream().CopyToAsync(ms);
+       var bytes = ms.ToArray();
+       //do something with bytes
     }
 }
