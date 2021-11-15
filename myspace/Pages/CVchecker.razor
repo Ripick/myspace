@@ -3,7 +3,7 @@
 <h1> placeholder </h1>
 <p> ladda upp en fil i textrutan så kommer du få ett svar på om det är mitt cv/pb eller inte... </p>
 
-<InputFile OnChange="@LoadFiles" multiple />
+<InputFile OnChange="@SingleUpload" multiple />
 
 @code {
      private async Task SingleUpload(InputFileChangeEventArgs e)
