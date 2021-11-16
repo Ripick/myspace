@@ -18,7 +18,7 @@
        MemoryStream ms = new MemoryStream();
        await e.File.OpenReadStream().CopyToAsync(ms);
        
-       filstring = Services.PageHelpers.GetHashString(ms.ToString());
+       filstring = System.Text.Encoding.Unicode.GetString(Services.PageHelpers.GetHash(ms.ToString()));
        //do something with bytes
     }
 }
