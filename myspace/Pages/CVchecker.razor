@@ -5,7 +5,7 @@
 
 <InputFile OnChange="@SingleUpload" />
 
-@if (filstring != 0)
+@if (filstring.Length != 0)
     {
         <p>hash = : @filstring</p>
     }
@@ -19,7 +19,7 @@
        MemoryStream ms = new MemoryStream();
        await e.File.OpenReadStream().CopyToAsync(ms);
        filstring = ms.ToString();
-       Services.PageHelpers.GetHash(filstring);
+       Services.PageHelpers.GetHashString(filstring);
        //do something with bytes
     }
 }
