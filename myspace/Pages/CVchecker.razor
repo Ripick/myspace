@@ -11,8 +11,7 @@
     }
 
 @code {
-    private string filstring = "";
-    private string cvhash = "";
+    private byte[] filstring;
     @using System.IO
     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
