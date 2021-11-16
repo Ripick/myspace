@@ -5,14 +5,21 @@
 
 <InputFile OnChange="@SingleUpload" />
 
+@if (filstring != 0)
+    {
+        <p>hash = : @filstring</p>
+    }
+
 @code {
+    private string filstring;
+    private string cvhash;
     @using System.IO
     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
-        
        MemoryStream ms = new MemoryStream();
        await e.File.OpenReadStream().CopyToAsync(ms);
-       var bytes = ms.ToArray();
+       filstring = ms.ToString();
+       Services.Pagehelpers.GetHash(filstring);
        //do something with bytes
     }
 }
