@@ -19,7 +19,7 @@
        MemoryStream ms = new MemoryStream();
        await e.File.OpenReadStream().CopyToAsync(ms);
        filstring = ms.ToString();
-       Services.Pagehelpers.GetHash(filstring);
+       Services.PageHelpers.GetHash(filstring);
        //do something with bytes
     }
 }
