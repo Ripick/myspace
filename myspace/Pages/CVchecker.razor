@@ -8,7 +8,7 @@
 
 
 @inject Hash.Hasher _hashval
-@if (filstring.Equals(_hashval.hashval) )
+@if (filstring.Equals("Lj4SaIhBx5dGTPwEgXaljRIhwpfroHDIWQAQMeeaULd8B8idYCDl8EEpfI7x42MungjTtq4OiSjI+SSHJ6EfVg==") )
     {
         <p>Woop det är mitt CV!</p>
     }
@@ -23,6 +23,8 @@
 
        using( System.Security.Cryptography.HashAlgorithm algorithm = System.Security.Cryptography.SHA512.Create() )
         filstring = Convert.ToBase64String(algorithm.ComputeHash(ms.ToArray()));
+       
+       
        //filstring = Convert.ToBase64String(Services.PageHelpers.GetHash(ms.ToString()));
        //filstring = System.Text.Encoding.UTF8.GetString(Services.PageHelpers.GetHash(ms.ToString()));
        //do something with bytes
