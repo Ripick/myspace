@@ -11,14 +11,14 @@
     }
 
 @code {
-    private byte[] filstring;
+    private string filstring = "";
     @using System.IO
     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
        MemoryStream ms = new MemoryStream();
        await e.File.OpenReadStream().CopyToAsync(ms);
        
-       filstring = Services.PageHelpers.GetHash(ms.ToString());
+       filstring = Services.PageHelpers.GetHashString(ms.ToString());
        //do something with bytes
     }
 }
