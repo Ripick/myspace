@@ -5,6 +5,9 @@
 
 <InputFile OnChange="@SingleUpload" />
 
+
+
+
 @if (filstring.Length > 0)
     {
         <p>hash = : @filstring</p>
@@ -17,8 +20,10 @@
     {
        MemoryStream ms = new MemoryStream();
        await e.File.OpenReadStream().CopyToAsync(ms);
-       
-       filstring = Convert.ToBase64String(Services.PageHelpers.GetHash(ms.ToString()));
+
+       using( System.Security.Cryptography.HashAlgorithm algorithm = System.Security.Cryptography.SHA512.Create() )
+        filstring = Convert.ToBase64String(algorithm.ComputeHash(ms.ToArray()));
+       //filstring = Convert.ToBase64String(Services.PageHelpers.GetHash(ms.ToString()));
        //filstring = System.Text.Encoding.UTF8.GetString(Services.PageHelpers.GetHash(ms.ToString()));
        //do something with bytes
     }
