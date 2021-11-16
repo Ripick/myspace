@@ -5,14 +5,14 @@
 
 <InputFile OnChange="@SingleUpload" />
 
-@if (filstring.Length != 0)
+@if (filstring.Length > 0)
     {
         <p>hash = : @filstring</p>
     }
 
 @code {
-    private string filstring;
-    private string cvhash;
+    private string filstring = "";
+    private string cvhash = "";
     @using System.IO
     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
