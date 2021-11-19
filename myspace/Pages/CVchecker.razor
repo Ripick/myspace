@@ -1,35 +1,41 @@
 @page "/cvcheck"
 
-<h1> placeholder </h1>
-<p> ladda upp en fil i textrutan så kommer du få ett svar på om det är mitt cv/pb eller inte... </p>
+<h1> CV Checker </h1>
+<p> Ladda upp en fil i textrutan så kommer du få ett svar på om det är mitt cv/pb eller inte... </p>
 
 <InputFile OnChange="@SingleUpload" />
 
 
 
-@if (String.Equals(filstring, "Lj4SaIhBx5dGTPwEgXaljRIhwpfroHDIWQAQMeeaULd8B8idYCDl8EEpfI7x42MungjTtq4OiSjI+SSHJ6EfVg==") )
-    {
-        <p>Woop det är mitt CV!</p>
-    }
+@if (String.Equals(filstring,
+"Lj4SaIhBx5dGTPwEgXaljRIhwpfroHDIWQAQMeeaULd8B8idYCDl8EEpfI7x42MungjTtq4OiSjI+SSHJ6EfVg=="))
+{
+    <p>Woop det är mitt CV!</p>
+}
 else
 {
-    <p>Nope det är inte mitt CV.</p>
+    if (FileLoaded)
+    {
+        <p>Nope det är inte mitt CV.</p>
+    }
 }
 
 @code {
     private string filstring = "";
+    bool FileLoaded = false;
     @using System.IO
     private async Task SingleUpload(InputFileChangeEventArgs e)
     {
-       MemoryStream ms = new MemoryStream();
-       await e.File.OpenReadStream().CopyToAsync(ms);
+        FileLoaded = true;
+        MemoryStream ms = new MemoryStream();
+        await e.File.OpenReadStream().CopyToAsync(ms);
 
-       using( System.Security.Cryptography.HashAlgorithm algorithm = System.Security.Cryptography.SHA512.Create() )
-        filstring = Convert.ToBase64String(algorithm.ComputeHash(ms.ToArray()));
-       
-       
-       //filstring = Convert.ToBase64String(Services.PageHelpers.GetHash(ms.ToString()));
-       //filstring = System.Text.Encoding.UTF8.GetString(Services.PageHelpers.GetHash(ms.ToString()));
-       //do something with bytes
+        using (System.Security.Cryptography.HashAlgorithm algorithm = System.Security.Cryptography.SHA512.Create())
+            filstring = Convert.ToBase64String(algorithm.ComputeHash(ms.ToArray()));
+
+
+        //filstring = Convert.ToBase64String(Services.PageHelpers.GetHash(ms.ToString()));
+        //filstring = System.Text.Encoding.UTF8.GetString(Services.PageHelpers.GetHash(ms.ToString()));
+        //do something with bytes
     }
 }
